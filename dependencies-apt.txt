@@ -1,1 +1,9 @@
 # LIST YOUR APT PACKAGES HERE
+
+# runtime dependencies for vscode
+git
+jq
+libatomic1
+nano
+net-tools
+sudo

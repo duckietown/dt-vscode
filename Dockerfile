@@ -1,9 +1,9 @@
 # parameters
-ARG REPO_NAME="<REPO_NAME_HERE>"
-ARG DESCRIPTION="<DESCRIPTION_HERE>"
-ARG MAINTAINER="<YOUR_FULL_NAME> (<YOUR_EMAIL_ADDRESS>)"
+ARG REPO_NAME="dt-vscode"
+ARG DESCRIPTION="VSCode back-end"
+ARG MAINTAINER="Andrea F. Daniele (afdaniele@ttic.edu)"
 # pick an icon from: https://fontawesome.com/v4.7.0/icons/
-ARG ICON="cube"
+ARG ICON="code"
 
 # ==================================================>
 # ==> Do not change the code below this line
@@ -56,8 +56,8 @@ ARG PIP_INDEX_URL="https://pypi.org/simple"
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN echo PIP_INDEX_URL=${PIP_INDEX_URL}
 
-COPY ./dependencies-py3.* "${REPO_PATH}/"
-RUN python3 -m pip install  -r ${REPO_PATH}/dependencies-py3.txt
+COPY ./dependencies-py3.txt "${REPO_PATH}/"
+RUN pip3 install -r ${REPO_PATH}/dependencies-py3.txt
 
 # copy the source code
 COPY ./packages "${REPO_PATH}/packages"
@@ -82,3 +82,10 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
     org.duckietown.label.maintainer="${MAINTAINER}"
 # <== Do not change the code above this line
 # <==================================================
+
+# install VSCode \
+ENV VSCODE_VERSION="4.4.0" \
+    VSCODE_INSTALL_DIR="/opt/vscode"
+COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
+RUN /tmp/install-code-server.sh && \
+    rm -f install-code-server.sh
