@@ -5,6 +5,7 @@ ARG MAINTAINER="Andrea F. Daniele (afdaniele@ttic.edu)"
 # pick an icon from: https://fontawesome.com/v4.7.0/icons/
 ARG ICON="code"
 
+
 # ==================================================>
 # ==> Do not change the code below this line
 ARG ARCH=arm64v8
@@ -83,9 +84,19 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <== Do not change the code above this line
 # <==================================================
 
+
+
 # install VSCode \
 ENV VSCODE_VERSION="4.4.0" \
     VSCODE_INSTALL_DIR="/opt/vscode"
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
+    
+# install VSCode-Backend
+ENV BACKEND_HOST="127.0.0.1"
+ENV BACKEND_PORT="5001"
+ENV VSCODE_BACKEND_DIR="/opt/vscode-backend"
+COPY ./assets/install-code-server-backend.sh /tmp/install-code-server-backend.sh
+RUN /tmp/install-code-server-backend.sh && \
+    rm -f install-code-server-backend.sh    

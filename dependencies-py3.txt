@@ -1,1 +1,4 @@
-# LIST YOUR PYTHON3 PACKAGES HERE
+#duckietown-shell
+Flask
+flask-cors
+gunicorn
