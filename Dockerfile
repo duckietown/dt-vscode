@@ -50,6 +50,10 @@ ENV DT_LAUNCHER "${LAUNCHER}"
 
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
+
+#HOT FIX FOR GPG ERROR
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
 
 # install python3 dependencies
@@ -87,16 +91,17 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 
 
 # install VSCode \
+
 ENV VSCODE_VERSION="4.4.0" \
-    VSCODE_INSTALL_DIR="/opt/vscode"
+    VSCODE_INSTALL_DIR="/opt/vscode" 
+
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
-    
+ENV PATH="$PATH:/opt/vscode/bin/" \
+    VSCODE_PORT="8443" 
 # install VSCode-Backend
-ENV BACKEND_HOST="127.0.0.1"
-ENV BACKEND_PORT="5001"
-ENV VSCODE_BACKEND_DIR="/opt/vscode-backend"
+
 COPY ./assets/install-code-server-backend.sh /tmp/install-code-server-backend.sh
 RUN /tmp/install-code-server-backend.sh && \
     rm -f install-code-server-backend.sh    

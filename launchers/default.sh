@@ -14,8 +14,7 @@ dt-launchfile-init
 
 # launching app
 dt-launcher-start-backend
-dt-exec /opt/vscode/bin/code-server
-
+dt-exec code-server --auth none --bind-addr 0.0.0.0:${VSCODE_PORT}
 
 # ----------------------------------------------------------------------------
 # YOUR CODE ABOVE THIS LINE
