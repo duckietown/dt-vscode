@@ -100,8 +100,16 @@ RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
 ENV PATH="$PATH:/opt/vscode/bin/" \
     VSCODE_PORT="8443" 
-# install VSCode-Backend
 
-COPY ./assets/install-code-server-backend.sh /tmp/install-code-server-backend.sh
-RUN /tmp/install-code-server-backend.sh && \
-    rm -f install-code-server-backend.sh    
+# install dts
+RUN pip3 install duckietown-shell
+COPY ./assets/dts-run.sh /tmp/dts-run.sh
+RUN bash /tmp/dts-run.sh && \
+    rm -f dts-run.sh
+
+COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
+RUN bash /tmp/runtime_docker.sh && \
+   rm -f runtime_docker.sh 
+
+#set global tasks
+COPY ./assets/tasks.json /root/.local/share/code-server/User/      
