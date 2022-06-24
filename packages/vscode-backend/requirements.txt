@@ -1,3 +1,0 @@
-duckietown-shell
-Flask
-flask-cors

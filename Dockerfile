@@ -92,6 +92,8 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 
 # install VSCode \
 
+ENV HOSTNAME=${hostname}
+
 ENV VSCODE_VERSION="4.4.0" \
     VSCODE_INSTALL_DIR="/opt/vscode" 
 

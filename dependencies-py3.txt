@@ -1,4 +1,1 @@
-#duckietown-shell
-Flask
-flask-cors
-gunicorn
+duckietown-shell
