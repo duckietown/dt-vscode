@@ -104,7 +104,6 @@ ENV PATH="$PATH:/opt/vscode/bin/" \
     VSCODE_PORT="8443" 
 
 # install dts
-RUN pip3 install duckietown-shell
 COPY ./assets/dts-run.sh /tmp/dts-run.sh
 RUN bash /tmp/dts-run.sh && \
     rm -f dts-run.sh
