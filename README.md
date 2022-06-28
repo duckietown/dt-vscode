@@ -57,9 +57,9 @@ Open link http://\<hostname\>.local:8443 in browser
 
 Clone your repository with "Clone Git Repository..."
 
-For run dts command in cloning repository press Ctr+Shift+P in browser.
+For run dts command in cloning repository press Ctrl+Shift+P in browser.
 Then enter 
 ```
 > Tasks: Run Task
 ```
-and choice "build solution", "run solution" or "stop solution"
+and choice "build solution", "run solution" or "stop solution", "restart duckiebot interface"

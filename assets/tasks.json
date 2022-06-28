@@ -9,10 +9,15 @@
         {
             "label": "run solution",
             "type": "shell",
-            "command": "dts devel run -H ${HOSTNAME}"
+            "command": "dts devel run -s -H ${HOSTNAME} -n dts-run-solution"
         },
         {
             "label": "stop solution",
+            "type": "shell",
+            "command": "docker -H ${HOSTNAME} stop -t 2 dts-run-solution"
+        },
+        {
+            "label": "restart duckiebot interface",
             "type": "shell",
             "command": "docker -H ${HOSTNAME} restart -t 1 duckiebot-interface"
         }
