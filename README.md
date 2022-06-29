@@ -45,3 +45,38 @@ a launcher will be created for it. For example, the script file
 
 When launching a new container, you can simply provide `dt-launcher-my-launcher` as
 command.
+
+## Start vscode on a bot
+From root project folder type in command line
+```
+dts devel build -H <hostname>
+dts devel run -H <hostname>
+```
+where \<hostname\> is your duckiebot name where vscode were deploy  
+Open link http://\<hostname\>.local:8443 in browser
+
+Clone your repository with "Clone Git Repository...". Open cloned repository in new window.
+
+For run dts command in cloning repository press Ctrl+Shift+P in browser.  
+Then enter 
+```
+> Tasks: Run Task
+```
+and choice "build solution", "run solution" or "stop solution", "restart duckiebot interface"
+
+## Start in dashboard on a bot
+
+Connect to a bot with ssh. Exec dashboard container and run this commands
+
+```
+docker exec -it dashboard bash
+cd /user-data/packages/
+git clone https://github.com/OSLL/compose-pkg-vscode
+mv compose-pkg-vscode/ vscode/
+```
+
+Open link http://\<hostname\>.local/dashboard/ in browser  
+where \<hostname\> is your duckiebot name where vscode were deploy
+
+Go to "Settings" -> "Package: Template"  
+Enter "Hostname" filed and "Port"(where your vscode were runned) filed

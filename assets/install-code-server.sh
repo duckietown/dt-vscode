@@ -12,6 +12,9 @@ fi
 if [ "${ARCH}" == 'arm64v8' ]; then
     VSCODE_TAR_NAME="code-server-${VSCODE_VERSION}-linux-arm64"
 fi
+if [ "${ARCH}" == 'arm32v7' ]; then
+    VSCODE_TAR_NAME="code-server-${VSCODE_VERSION}-linux-armv7l"
+fi
 VSCODE_TAR_URL="https://github.com/coder/code-server/releases/download/v${VSCODE_VERSION}/${VSCODE_TAR_NAME}.tar.gz"
 
 

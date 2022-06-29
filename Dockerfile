@@ -49,6 +49,10 @@ ENV DT_LAUNCHER "${LAUNCHER}"
 
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
+
+#HOT FIX FOR GPG ERROR
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
 
 # install python3 dependencies
@@ -83,9 +87,30 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <== Do not change the code above this line
 # <==================================================
 
-# install VSCode \
+
+
+# install VSCode
+
+ENV HOSTNAME=${hostname}
+
 ENV VSCODE_VERSION="4.4.0" \
-    VSCODE_INSTALL_DIR="/opt/vscode"
+    VSCODE_INSTALL_DIR="/opt/vscode" 
+
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
+ENV PATH="$PATH:/opt/vscode/bin/" \
+    VSCODE_PORT="8443" 
+
+# install dts
+
+COPY ./assets/dts-run.sh /tmp/dts-run.sh
+RUN bash /tmp/dts-run.sh && \
+    rm -f dts-run.sh
+
+COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
+RUN bash /tmp/runtime_docker.sh && \
+   rm -f runtime_docker.sh 
+
+# set global tasks in vscode
+COPY ./assets/tasks.json /root/.local/share/code-server/User/      
