@@ -14,7 +14,7 @@
         {
             "label": "stop solution",
             "type": "shell",
-            "command": "docker -H ${HOSTNAME} stop -t 2 dts-run-solution"
+            "command": "docker -H ${HOSTNAME} stop -t 4 dts-run-solution"
         },
         {
             "label": "restart duckiebot interface",

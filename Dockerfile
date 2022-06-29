@@ -5,7 +5,6 @@ ARG MAINTAINER="Andrea F. Daniele (afdaniele@ttic.edu)"
 # pick an icon from: https://fontawesome.com/v4.7.0/icons/
 ARG ICON="code"
 
-
 # ==================================================>
 # ==> Do not change the code below this line
 ARG ARCH=arm64v8
@@ -90,7 +89,7 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 
 
 
-# install VSCode \
+# install VSCode
 
 ENV HOSTNAME=${hostname}
 
@@ -104,6 +103,7 @@ ENV PATH="$PATH:/opt/vscode/bin/" \
     VSCODE_PORT="8443" 
 
 # install dts
+
 COPY ./assets/dts-run.sh /tmp/dts-run.sh
 RUN bash /tmp/dts-run.sh && \
     rm -f dts-run.sh
@@ -112,5 +112,5 @@ COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
 RUN bash /tmp/runtime_docker.sh && \
    rm -f runtime_docker.sh 
 
-#set global tasks
+# set global tasks in vscode
 COPY ./assets/tasks.json /root/.local/share/code-server/User/      
