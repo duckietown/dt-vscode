@@ -62,7 +62,7 @@ Then enter
 ```
 > Tasks: Run Task
 ```
-and choice "build solution", "run solution" or "stop solution", "restart duckiebot interface"
+and choice "build solution", "run solution" or "stop solution"
 
 ## Start in dashboard on a bot
 
