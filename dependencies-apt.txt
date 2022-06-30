@@ -7,3 +7,8 @@ libatomic1
 nano
 net-tools
 sudo
+avahi-utils
+iputils-ping
+apache2-utils
+sshpass
+rsync
