@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -e
 
 # variables
 VSCODE_TAR_NAME="UNDEFINED"
@@ -39,4 +39,4 @@ rm -f \
     /tmp/code-server.tar.gz \
     /etc/apt/sources.list.d/nodesource.list
 
-set +ex
+set +e

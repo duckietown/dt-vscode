@@ -49,10 +49,6 @@ ENV DT_LAUNCHER "${LAUNCHER}"
 
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
-
-#HOT FIX FOR GPG ERROR
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
 
 # install python3 dependencies
@@ -60,8 +56,8 @@ ARG PIP_INDEX_URL="https://pypi.org/simple"
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN echo PIP_INDEX_URL=${PIP_INDEX_URL}
 
-COPY ./dependencies-py3.txt "${REPO_PATH}/"
-RUN pip3 install -r ${REPO_PATH}/dependencies-py3.txt
+COPY ./dependencies-py3.* "${REPO_PATH}/"
+RUN python3 -m pip install  -r ${REPO_PATH}/dependencies-py3.txt
 
 # copy the source code
 COPY ./packages "${REPO_PATH}/packages"
@@ -87,30 +83,17 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <== Do not change the code above this line
 # <==================================================
 
-
-
 # install VSCode
-
-ENV HOSTNAME=${hostname}
-
 ENV VSCODE_VERSION="4.4.0" \
-    VSCODE_INSTALL_DIR="/opt/vscode" 
-
+    VSCODE_INSTALL_DIR="/opt/vscode" \
+    VSCODE_PORT="8088" \
+    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User"
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
-ENV PATH="$PATH:/opt/vscode/bin/" \
-    VSCODE_PORT="8443" 
 
-# install dts
-
-COPY ./assets/dts-run.sh /tmp/dts-run.sh
-RUN bash /tmp/dts-run.sh && \
-    rm -f dts-run.sh
-
-COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
-RUN bash /tmp/runtime_docker.sh && \
-   rm -f runtime_docker.sh 
-
-# set global tasks in vscode
-COPY ./assets/tasks.json /root/.local/share/code-server/User/      
+# copy settings/keybindings file
+ADD --chown=duckie:duckie \
+    ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+ADD --chown=duckie:duckie \
+    ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
