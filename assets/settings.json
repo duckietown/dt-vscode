@@ -2,6 +2,7 @@
     "security.workspace.trust.enabled": false,
     "files.exclude": {
         "DEVELOPER_PROJECTS_WILL_BE_PLACED_HERE": true
-    }
+    },
+    "workbench.colorTheme": "Default Dark+"
 }
 
