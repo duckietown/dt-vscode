@@ -97,3 +97,10 @@ ADD --chown=duckie:duckie \
     ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
 ADD --chown=duckie:duckie \
     ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+
+# install VSCode extensions
+USER duckie
+COPY ./assets/install-code-server-extensions.sh /tmp/install-code-server-extensions.sh
+RUN -- /tmp/install-code-server-extensions.sh && \
+    rm -f install-code-server-extensions.sh
+USER root
