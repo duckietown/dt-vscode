@@ -84,7 +84,7 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <==================================================
 
 # install VSCode
-ENV VSCODE_VERSION="4.4.0" \
+ENV VSCODE_VERSION="4.5.0" \
     VSCODE_INSTALL_DIR="/opt/vscode" \
     VSCODE_PORT="8088" \
     VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User"
