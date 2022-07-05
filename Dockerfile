@@ -101,6 +101,12 @@ ADD --chown=duckie:duckie \
 # install VSCode extensions
 USER duckie
 COPY ./assets/install-code-server-extensions.sh /tmp/install-code-server-extensions.sh
-RUN -- /tmp/install-code-server-extensions.sh && \
+RUN /tmp/install-code-server-extensions.sh && \
     rm -f install-code-server-extensions.sh
 USER root
+
+# install Docker CLI
+ENV DOCKER_CLI_VERSION="20.10.12"
+COPY assets/install-docker-cli.sh /tmp/install-docker-cli.sh
+RUN /tmp/install-docker-cli.sh && \
+    rm /tmp/install-docker-cli.sh

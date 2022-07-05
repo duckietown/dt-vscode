@@ -7,3 +7,6 @@ html/*
 
 # otherwise CI thinks index not clean
 *.resolved
+
+# sandbox directory used to contain test user workspaces
+./sandbox

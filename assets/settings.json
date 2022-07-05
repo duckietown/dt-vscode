@@ -5,6 +5,8 @@
     },
     "workbench.colorTheme": "Default Dark+",
     "workbench.tree.indent": 16,
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.fontSize": 13
 }
 
