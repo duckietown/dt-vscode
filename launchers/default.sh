@@ -11,11 +11,15 @@ dt-launchfile-init
 # NOTE: Use the variable DT_REPO_PATH to know the absolute path to your code
 # NOTE: Use `dt-exec COMMAND` to run the main process (blocking process)
 
+set -e
+
 # variables
 vscode_path="${USER_WS_DIR}"
 
-# add user duckie to group docker[133]
-GID=133
+# find GID of docker's group on the host
+GID=$(awk -F':' '/docker/{print $3}' /host/etc/group)
+
+# add user duckie to group docker
 GNAME=docker
 if [ ! "$(getent group "${GID}")" ]; then
     echo "Creating a group '${GNAME}' with GID:${GID} for the user duckie"
@@ -37,6 +41,8 @@ if [ "${code_wss_num}" = "1" ]; then
     echo "Found only 1 workspace at '${code_wss}', auto-opening..."
     vscode_path="${code_wss}"
 fi
+
+set +e
 
 # launching app (retry 3 times, minimum timeout is 10secs, wait 5 seconds between trials)
 max_trials=3
