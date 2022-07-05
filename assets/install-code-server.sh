@@ -28,7 +28,7 @@ wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - 
 
 # install
 mkdir -p "${VSCODE_INSTALL_DIR}"
-wget -O /tmp/code-server.tar.gz "${VSCODE_TAR_URL}"
+wget -qO /tmp/code-server.tar.gz "${VSCODE_TAR_URL}"
 tar xf /tmp/code-server.tar.gz -C "${VSCODE_INSTALL_DIR}" --strip-components=1
 
 # clean up
