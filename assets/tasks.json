@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build solution",
+            "type": "shell",
+            "command": "dts devel build -f -H `hostname`.local"
+        },
+        {
+            "label": "run solution",
+            "type": "shell",
+            "command": "dts devel run -s -H `hostname`.local -n dts-run-solution"
+        },
+        {
+            "label": "stop solution",
+            "type": "shell",
+            "command": "docker -H `hostname`.local stop -t 4 dts-run-solution"
+        },
+        {
+            "label": "restart duckiebot interface",
+            "type": "shell",
+            "command": "docker -H `hostname`.local restart -t 1 duckiebot-interface"
+        }
+    ]
+ }
+ 
