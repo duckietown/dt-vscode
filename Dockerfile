@@ -47,6 +47,9 @@ ENV DT_REPO_PATH "${REPO_PATH}"
 ENV DT_LAUNCH_PATH "${LAUNCH_PATH}"
 ENV DT_LAUNCHER "${LAUNCHER}"
 
+#HOT FIX FOR GPG ERROR
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
@@ -92,18 +95,20 @@ COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
 
+# install dts
+COPY ./assets/dts-run.sh /tmp/dts-run.sh
+RUN bash /tmp/dts-run.sh && \
+    rm -f dts-run.sh
+
 # copy settings/keybindings file
-ADD --chown=duckie:duckie \
-    ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
-ADD --chown=duckie:duckie \
-    ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+ADD ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+ADD ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+ADD ./assets/tasks.json "${VSCODE_USER_SETTINGS_DIR}/tasks.json"
 
 # install VSCode extensions
-USER duckie
 COPY ./assets/install-code-server-extensions.sh /tmp/install-code-server-extensions.sh
 RUN /tmp/install-code-server-extensions.sh && \
     rm -f install-code-server-extensions.sh
-USER root
 
 # install Docker CLI
 ENV DOCKER_CLI_VERSION="20.10.12"
