@@ -4,23 +4,18 @@
         {
             "label": "build solution",
             "type": "shell",
-            "command": "dts devel build -f -H ${HOSTNAME}"
+            "command": "dts devel build -H `hostname`.local -f"
         },
         {
             "label": "run solution",
             "type": "shell",
-            "command": "dts devel run -s -H ${HOSTNAME} -n dts-run-solution"
+            "command": "dts devel run -s -H `hostname`.local -n dts-run-solution"
         },
         {
             "label": "stop solution",
             "type": "shell",
-            "command": "docker -H ${HOSTNAME} stop -t 4 dts-run-solution"
-        },
-        {
-            "label": "restart duckiebot interface",
-            "type": "shell",
-            "command": "docker -H ${HOSTNAME} restart -t 1 duckiebot-interface"
+            "command": "docker -H `hostname`.local stop -t 2 dts-run-solution"
         }
     ]
  }
- 
+ s

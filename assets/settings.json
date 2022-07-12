@@ -1,0 +1,12 @@
+{
+    "security.workspace.trust.enabled": false,
+    "files.exclude": {
+        "DEVELOPER_PROJECTS_WILL_BE_PLACED_HERE": true
+    },
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.tree.indent": 16,
+    "editor.tabSize": 4,
+    "terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.fontSize": 13
+}
+

@@ -100,7 +100,7 @@ COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
 ENV PATH="$PATH:/opt/vscode/bin/" \
-    VSCODE_PORT="8443" 
+    VSCODE_PORT="8088" 
 
 # install dts
 
@@ -112,5 +112,7 @@ COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
 RUN bash /tmp/runtime_docker.sh && \
    rm -f runtime_docker.sh 
 
-# set global tasks in vscode
-COPY ./assets/tasks.json /root/.local/share/code-server/User/      
+# set settings
+COPY ./assets/tasks.json /root/.local/share/code-server/User/ 
+COPY ./assets/keybindings.json /root/.local/share/code-server/User/ 
+COPY ./assets/settings.json /root/.local/share/code-server/User/ 
