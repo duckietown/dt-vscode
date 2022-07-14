@@ -33,6 +33,7 @@ RUN dt-build-env-check "${REPO_NAME}" "${MAINTAINER}" "${DESCRIPTION}"
 
 # define/create repository path
 ARG REPO_PATH="${SOURCE_DIR}/${REPO_NAME}"
+ARG COMMANDS_REPO="https://github.com/OSLL/duckietown-shell-commands.git"
 ARG LAUNCH_PATH="${LAUNCH_DIR}/${REPO_NAME}"
 RUN mkdir -p "${REPO_PATH}"
 RUN mkdir -p "${LAUNCH_PATH}"
@@ -107,6 +108,9 @@ ENV PATH="$PATH:/opt/vscode/bin/" \
 COPY ./assets/dts-run.sh /tmp/dts-run.sh
 RUN bash /tmp/dts-run.sh && \
     rm -f dts-run.sh
+RUN git clone "${COMMANDS_REPO}" /root/.local/share/code-server/User/duckietown-shell-commands
+ENV DTSHELL_COMMANDS /root/.local/share/code-server/User/duckietown-shell-commands
+
 
 COPY ./assets/runtime_docker.sh /tmp/runtime_docker.sh
 RUN bash /tmp/runtime_docker.sh && \
