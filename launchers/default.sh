@@ -44,11 +44,11 @@ fi
 
 set +e
 
-# launching app (retry 20 times, wait 5 seconds between trials)
+# launching app (retry until it succeeds, wait 5 seconds between trials)
 sleep 5
-max_trials=20
-for (( trial=1; trial<=$max_trials; trial++ )); do
-    echo "Launching VSCode, trial ${trial}/${max_trials}..."
+trial=1
+while true; do
+    echo "Launching VSCode, trial ${trial}..."
     sudo \
         -H \
         -u duckie \
@@ -61,8 +61,8 @@ for (( trial=1; trial<=$max_trials; trial++ )); do
         exit 0
     fi
     sleep 5
+    trial=$((trial+1))
 done
-echo "All ${max_trials} attempts at running VSCode failed. Giving up!"
 
 # ----------------------------------------------------------------------------
 # YOUR CODE ABOVE THIS LINE
