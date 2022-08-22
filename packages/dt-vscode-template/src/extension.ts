@@ -13,13 +13,35 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('dt-vscode-template.helloWorld', () => {
+	let build = vscode.commands.registerCommand('dt-vscode-template.build', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from dt-vscode-template!');
+		vscode.window.showInformationMessage('Build solution...');
 	});
 
-	context.subscriptions.push(disposable);
+	let run = vscode.commands.registerCommand('dt-vscode-template.run', () => {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		vscode.window.showInformationMessage('Run solution...');
+	});
+
+	let stop = vscode.commands.registerCommand('dt-vscode-template.stop', () => {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		vscode.window.showInformationMessage('Stop solution...');
+	});
+
+	let restart = vscode.commands.registerCommand('dt-vscode-template.restart', () => {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		vscode.window.showInformationMessage('Restart bot interface...');
+	});
+
+
+	context.subscriptions.push(build);
+	context.subscriptions.push(run);
+	context.subscriptions.push(stop);
+	context.subscriptions.push(restart);
 }
 
 // this method is called when your extension is deactivated

@@ -10,20 +10,33 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:dt-vscode-template.helloWorld"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dt-vscode",
+					"title": "Duckietown template utils",
+					"icon": "media/icon1.svg"
+				}
+			]
+		},
+		"views": {
+			"dt-vscode": [
+				{
+					"id": "commands",
+					"name": "Commands",
+					"icon": "media/icon1.svg",
+					"contextualTitle": "Duckietown template commands"
+				}
+			]
+		},
     "viewsWelcome": [
       {
-        "view": "debug",
-        "contents": "\n[Hello](command:dt-vscode-template.helloWorld)\n"
-      }
-    ],
-    "commands": [
-      {
-        "command": "dt-vscode-template.helloWorld",
-        "title": "Hello World"
+        "view": "commands",
+        "contents": "Functionality for working with solutions on the bot.\nBuild solution on a bot.\n[Build](command:dt-vscode-template.build)\nRun solution on a bot.\n[Run](command:dt-vscode-template.run)\nStop solution on a bot.\n[Stop](command:dt-vscode-template.stop)\nRestart bot interface solution on a bot.\n[Restart interface](command:dt-vscode-template.restart)\n\n"
       }
     ]
   },

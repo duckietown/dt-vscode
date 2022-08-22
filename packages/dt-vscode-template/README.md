@@ -1,3 +1,10 @@
+RUN EXTENSION
+    npm install
+F5
+
+
+
+
 # dt-vscode-template README
 
 This is the README for your extension "dt-vscode-template". After writing up a brief description, we recommend including the following sections.
