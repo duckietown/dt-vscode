@@ -56,8 +56,8 @@ ARG PIP_INDEX_URL="https://pypi.org/simple"
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN echo PIP_INDEX_URL=${PIP_INDEX_URL}
 
-COPY ./dependencies-py3.txt "${REPO_PATH}/"
-RUN pip3 install -r ${REPO_PATH}/dependencies-py3.txt
+COPY ./dependencies-py3.* "${REPO_PATH}/"
+RUN python3 -m pip install  -r ${REPO_PATH}/dependencies-py3.txt
 
 # copy the source code
 COPY ./packages "${REPO_PATH}/packages"
@@ -83,9 +83,30 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <== Do not change the code above this line
 # <==================================================
 
-# install VSCode \
-ENV VSCODE_VERSION="4.4.0" \
-    VSCODE_INSTALL_DIR="/opt/vscode"
+# install VSCode
+ENV VSCODE_VERSION="4.5.0" \
+    VSCODE_INSTALL_DIR="/opt/vscode" \
+    VSCODE_PORT="8088" \
+    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User"
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
+
+# copy settings/keybindings file
+ADD --chown=duckie:duckie \
+    ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+ADD --chown=duckie:duckie \
+    ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+
+# install VSCode extensions
+USER duckie
+COPY ./assets/install-code-server-extensions.sh /tmp/install-code-server-extensions.sh
+RUN /tmp/install-code-server-extensions.sh && \
+    rm -f install-code-server-extensions.sh
+USER root
+
+# install Docker CLI
+ENV DOCKER_CLI_VERSION="20.10.12"
+COPY assets/install-docker-cli.sh /tmp/install-docker-cli.sh
+RUN /tmp/install-docker-cli.sh && \
+    rm /tmp/install-docker-cli.sh

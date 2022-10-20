@@ -6,4 +6,4 @@ jq
 libatomic1
 nano
 net-tools
-sudo
+apache2-utils
