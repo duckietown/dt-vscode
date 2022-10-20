@@ -18,6 +18,7 @@ ARG LAUNCHER=default
 FROM ${DOCKER_REGISTRY}/duckietown/${BASE_IMAGE}:${BASE_TAG} as BASE
 
 # recall all arguments
+ARG ARCH
 ARG DISTRO
 ARG REPO_NAME
 ARG DESCRIPTION
@@ -86,10 +87,12 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
 # <==================================================
 
 # install VSCode
-ENV VSCODE_VERSION="4.5.0" \
+ENV VSCODE_VERSION="4.7.1" \
     VSCODE_INSTALL_DIR="/opt/vscode" \
     VSCODE_PORT="8088" \
-    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User"
+    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User" \
+    VSCODE_USER_EXTENSIONS_DIR="/home/duckie/.local/share/code-server/extensions"
+
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
 RUN /tmp/install-code-server.sh && \
     rm -f install-code-server.sh
@@ -102,9 +105,14 @@ ADD --chown=duckie:duckie \
 
 # install VSCode extensions
 USER duckie
-COPY ./assets/install-code-server-extensions.sh /tmp/install-code-server-extensions.sh
-RUN /tmp/install-code-server-extensions.sh && \
-    rm -f install-code-server-extensions.sh
+COPY ./assets/install-code-server-extension.sh /tmp/install-code-server-extension
+
+# install Python (https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+RUN /tmp/install-code-server-extension ms-python.python 2022.16.1
+
+# install Terminals Manager (https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-terminals)
+RUN /tmp/install-code-server-extension fabiospampinato.vscode-terminals 1.13.0
+
 USER root
 
 # install Docker CLI

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 # variables
 VSCODE_TAR_NAME="UNDEFINED"
@@ -22,7 +22,7 @@ VSCODE_TAR_URL="https://github.com/coder/code-server/releases/download/v${VSCODE
 wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     echo 'deb https://deb.nodesource.com/node_14.x focal main' > /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         nodejs && \
     rm -rf /var/lib/apt/lists/*
 

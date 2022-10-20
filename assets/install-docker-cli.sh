@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 # variables
 DOCKER_CLI_TAR_NAME="UNDEFINED"
