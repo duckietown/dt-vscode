@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+# ---
+
+PUBLISHER=$1
+EXTENSION=$2
+VERSION=$3
+
+URL="https://${PUBLISHER}.gallery.vsassets.io/_apis/public/gallery/publisher/${PUBLISHER}/extension/${EXTENSION}/${VERSION}/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage"
+LOCAL="/tmp/${PUBLISHER}.${EXTENSION}.${VERSION}.vsix"
+
+set -x
+wget -qO "${LOCAL}" "${URL}"
+/opt/vscode/bin/code-server \
+    --verbose \
+    --install-extension \
+        "${LOCAL}"
+set +x
+
+if test -z "$(find "${VSCODE_USER_EXTENSIONS_DIR}" -maxdepth 1 -name "${EXTENSION}*" -print -quit)"; then
+    echo "ERROR: Extension '${EXTENSION}' failed to install"
+    exit 1
+fi
+
+# ---
+set +e

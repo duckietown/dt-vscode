@@ -17,14 +17,9 @@ if [ "${ARCH}" == 'arm32v7' ]; then
 fi
 VSCODE_TAR_URL="https://github.com/coder/code-server/releases/download/v${VSCODE_VERSION}/${VSCODE_TAR_NAME}.tar.gz"
 
-
 # install NodeJS
-wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo 'deb https://deb.nodesource.com/node_14.x focal main' > /etc/apt/sources.list.d/nodesource.list && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        nodejs && \
-    rm -rf /var/lib/apt/lists/*
+wget https://deb.nodesource.com/setup_19.x -O - | sudo -E bash -
+apt-get install -y nodejs
 
 # install
 mkdir -p "${VSCODE_INSTALL_DIR}"

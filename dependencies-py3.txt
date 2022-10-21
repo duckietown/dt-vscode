@@ -1,4 +1,12 @@
 # LIST YOUR PYTHON3 PACKAGES HERE
 
+# docker APIs
 docker
 docker-compose
+
+# this is needed to support Jupyter notebooks
+ipykernel
+ipython
+
+# this is for testing
+pytest

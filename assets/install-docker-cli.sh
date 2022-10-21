@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -e
 
 # variables
 DOCKER_CLI_TAR_NAME="UNDEFINED"
@@ -17,6 +17,8 @@ if [ "${ARCH}" == 'arm32v7' ]; then
 fi
 DOCKER_CLI_TAR_URL="https://download.docker.com/linux/static/stable/${DOCKER_CLI_TAR_NAME}-${DOCKER_CLI_VERSION}.tgz"
 
+set -x
+
 # install docker CLI
 wget -qO /tmp/docker-cli.tgz "${DOCKER_CLI_TAR_URL}"
 tar xzvf /tmp/docker-cli.tgz \
@@ -24,4 +26,4 @@ tar xzvf /tmp/docker-cli.tgz \
     -C /usr/local/bin docker/docker
 rm /tmp/docker-cli.tgz
 
-set +e
+set +ex

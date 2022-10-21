@@ -42,6 +42,17 @@ if [ "${code_wss_num}" = "1" ]; then
     vscode_path="${code_wss}"
 fi
 
+# look for SSL keys
+if [ -f /ssl/localhost.pem ] & [ -f /ssl/localhost-key.pem ]; then
+    echo "GOOD: Found SSL keys under '/ssl', using HTTPS"
+    cp -R /ssl /tmp/ssl
+    chown -R duckie:duckie /tmp/ssl
+    SSL_CONFIG="--cert /tmp/ssl/localhost.pem --cert-key /tmp/ssl/localhost-key.pem"
+else
+    echo "WARNING: No SSL keys found under '/ssl', using HTTP instead"
+    SSL_CONFIG=""
+fi
+
 set +e
 
 # launching app (retry until it succeeds, wait 5 seconds between trials)
@@ -49,13 +60,16 @@ sleep 5
 trial=1
 while true; do
     echo "Launching VSCode, trial ${trial}..."
+    set -x
     sudo \
         -H \
         -u duckie \
         /opt/vscode/bin/code-server \
             --auth none \
             --bind-addr "0.0.0.0:${VSCODE_PORT}" \
+            ${SSL_CONFIG} \
             "${vscode_path}"
+    set +x
     # exit code 0 means requested shutdown
     if [ "$?" -eq 0 ]; then
         exit 0

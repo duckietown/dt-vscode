@@ -105,18 +105,19 @@ ADD --chown=duckie:duckie \
 
 # install VSCode extensions
 USER duckie
-COPY ./assets/install-code-server-extension.sh /tmp/install-code-server-extension
+COPY ./assets/install-code-server-extension* /tmp/
 
-# install Python (https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-RUN /tmp/install-code-server-extension ms-python.python 2022.16.1
-
-# install Terminals Manager (https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-terminals)
-RUN /tmp/install-code-server-extension fabiospampinato.vscode-terminals 1.13.0
+RUN /tmp/install-code-server-extension-dcss ms-toolsai jupyter 2022.9.1002511105  && \
+    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-keymap 1.0.0  && \
+    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-renderers 1.0.9  && \
+    /tmp/install-code-server-extension-dcss ms-python python 2022.17.12911022  && \
+    /tmp/install-code-server-extension-dcss fabiospampinato vscode-terminals 1.13.0 && \
+    /tmp/install-code-server-extension-dcss tomoki1207 pdf 1.2.0
 
 USER root
 
 # install Docker CLI
-ENV DOCKER_CLI_VERSION="20.10.12"
-COPY assets/install-docker-cli.sh /tmp/install-docker-cli.sh
-RUN /tmp/install-docker-cli.sh && \
-    rm /tmp/install-docker-cli.sh
+# ENV DOCKER_CLI_VERSION="20.10.12"
+# COPY assets/install-docker-cli.sh /tmp/install-docker-cli.sh
+# RUN /tmp/install-docker-cli.sh && \
+#     rm /tmp/install-docker-cli.sh
