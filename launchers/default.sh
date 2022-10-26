@@ -14,7 +14,8 @@ dt-launchfile-init
 set -e
 
 # variables
-vscode_path="${USER_WS_DIR}"
+VSCODE_AUTH=none
+VSCODE_PATH="${USER_WS_DIR}"
 
 # find GID of docker's group on the host
 GID=$(awk -F':' '/docker/{print $3}' /host/etc/group)
@@ -39,7 +40,7 @@ code_wss_num=$(echo "${code_wss}" | wc -l)
 
 if [ "${code_wss_num}" = "1" ]; then
     echo "Found only 1 workspace at '${code_wss}', auto-opening..."
-    vscode_path="${code_wss}"
+    VSCODE_PATH="${code_wss}"
 fi
 
 # look for SSL keys
@@ -55,6 +56,12 @@ fi
 
 set +e
 
+# export configuration
+export VSCODE_AUTH
+export VSCODE_PORT
+export SSL_CONFIG
+export VSCODE_PATH
+
 # launching app (retry until it succeeds, wait 5 seconds between trials)
 sleep 5
 trial=1
@@ -63,12 +70,9 @@ while true; do
     set -x
     sudo \
         -H \
+        -E \
         -u duckie \
-        /opt/vscode/bin/code-server \
-            --auth none \
-            --bind-addr "0.0.0.0:${VSCODE_PORT}" \
-            ${SSL_CONFIG} \
-            "${vscode_path}"
+            dt-launcher-internal-vscode
     set +x
     # exit code 0 means requested shutdown
     if [ "$?" -eq 0 ]; then
