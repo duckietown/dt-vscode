@@ -55,6 +55,43 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
 
+# === VSCode =======================================>
+
+# VSCode environment
+ENV VSCODE_VERSION="4.7.1" \
+    VSCODE_INSTALL_DIR="/opt/vscode" \
+    VSCODE_PORT="8088" \
+    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User" \
+    VSCODE_USER_EXTENSIONS_DIR="/home/duckie/.local/share/code-server/extensions"
+
+# install VSCode
+COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
+RUN /tmp/install-code-server.sh && \
+    rm -f install-code-server.sh
+
+# copy settings/keybindings file
+ADD --chown=duckie:duckie \
+    ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
+ADD --chown=duckie:duckie \
+    ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
+
+# switch to unprivileged user
+USER duckie
+
+# install VSCode extensions
+COPY ./assets/install-code-server-extension* /tmp/
+RUN /tmp/install-code-server-extension-dcss ms-toolsai jupyter 2022.9.1002511105 && \
+    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-keymap 1.0.0 && \
+    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-renderers 1.0.9 && \
+    /tmp/install-code-server-extension-dcss ms-python python 2022.17.12911022 && \
+    /tmp/install-code-server-extension-dcss fabiospampinato vscode-terminals 1.13.0 && \
+    /tmp/install-code-server-extension-dcss tomoki1207 pdf 1.2.0
+
+# switch back to root
+USER root
+
+# <== VSCode ========================================
+
 # install python3 dependencies
 ARG PIP_INDEX_URL="https://pypi.org/simple"
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
@@ -85,36 +122,6 @@ LABEL org.duckietown.label.module.type="${REPO_NAME}" \
     org.duckietown.label.maintainer="${MAINTAINER}"
 # <== Do not change the code above this line
 # <==================================================
-
-# install VSCode
-ENV VSCODE_VERSION="4.7.1" \
-    VSCODE_INSTALL_DIR="/opt/vscode" \
-    VSCODE_PORT="8088" \
-    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User" \
-    VSCODE_USER_EXTENSIONS_DIR="/home/duckie/.local/share/code-server/extensions"
-
-COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
-RUN /tmp/install-code-server.sh && \
-    rm -f install-code-server.sh
-
-# copy settings/keybindings file
-ADD --chown=duckie:duckie \
-    ./assets/settings.json "${VSCODE_USER_SETTINGS_DIR}/settings.json"
-ADD --chown=duckie:duckie \
-    ./assets/keybindings.json "${VSCODE_USER_SETTINGS_DIR}/keybindings.json"
-
-# install VSCode extensions
-USER duckie
-COPY ./assets/install-code-server-extension* /tmp/
-
-RUN /tmp/install-code-server-extension-dcss ms-toolsai jupyter 2022.9.1002511105  && \
-    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-keymap 1.0.0  && \
-    /tmp/install-code-server-extension-dcss ms-toolsai jupyter-renderers 1.0.9  && \
-    /tmp/install-code-server-extension-dcss ms-python python 2022.17.12911022  && \
-    /tmp/install-code-server-extension-dcss fabiospampinato vscode-terminals 1.13.0 && \
-    /tmp/install-code-server-extension-dcss tomoki1207 pdf 1.2.0
-
-USER root
 
 # install Docker CLI
 # ENV DOCKER_CLI_VERSION="20.10.12"
