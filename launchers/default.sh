@@ -72,21 +72,21 @@ if [ "${HOST_UID:-}" != "" ]; then
 fi
 
 # find GID of docker's group on the host
-GID=$(awk -F':' '/docker/{print $3}' /host/etc/group)
+# GID=$(awk -F':' '/docker/{print $3}' /host/etc/group)
 
 # add user to group docker
-GNAME=docker
-if [ ! "$(getent group "${GID}")" ]; then
-    echo "Creating a group '${GNAME}' with GID:${GID} for the user '${VSCODE_USER}'"
-    # create group
-    groupadd --gid ${GID} ${GNAME}
-    usermod -aG ${GNAME} ${VSCODE_USER}
-else
-    GROUP_STR=$(getent group ${GID})
-    readarray -d : -t strarr <<< "$GROUP_STR"
-    GNAME="${strarr[0]}"
-    echo "A group with GID:${GID} (i.e., ${GNAME}) already exists. Reusing it."
-fi
+#GNAME=docker
+#if [ ! "$(getent group "${GID}")" ]; then
+#    echo "Creating a group '${GNAME}' with GID:${GID} for the user '${VSCODE_USER}'"
+#    # create group
+#    groupadd --gid ${GID} ${GNAME}
+#    usermod -aG ${GNAME} ${VSCODE_USER}
+#else
+#    GROUP_STR=$(getent group ${GID})
+#    readarray -d : -t strarr <<< "$GROUP_STR"
+#    GNAME="${strarr[0]}"
+#    echo "A group with GID:${GID} (i.e., ${GNAME}) already exists. Reusing it."
+#fi
 
 # look for SSL keys
 if [ -f /ssl/localhost.pem ] & [ -f /ssl/localhost-key.pem ]; then
