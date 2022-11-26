@@ -16,7 +16,7 @@ set -ex
 # variables
 VSCODE_AUTH=none
 VSCODE_PATH="${SOURCE_DIR}"
-VSCODE_USER=duckie
+VSCODE_USER=${DT_USER_NAME}
 
 # look for '*.code-workspace' workspaces and count them
 code_wss=$(find "${VSCODE_PATH}" -mindepth 2 -maxdepth 2 -type f -iname "*.code-workspace")

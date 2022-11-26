@@ -61,8 +61,8 @@ RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
 ENV VSCODE_VERSION="4.7.1" \
     VSCODE_INSTALL_DIR="/opt/vscode" \
     VSCODE_PORT="8088" \
-    VSCODE_USER_SETTINGS_DIR="/home/duckie/.local/share/code-server/User" \
-    VSCODE_USER_EXTENSIONS_DIR="/home/duckie/.local/share/code-server/extensions"
+    VSCODE_USER_SETTINGS_DIR="${DT_USER_HOME}/.local/share/code-server/User" \
+    VSCODE_USER_EXTENSIONS_DIR="${DT_USER_HOME}/.local/share/code-server/extensions"
 
 # install VSCode
 COPY ./assets/install-code-server.sh /tmp/install-code-server.sh
