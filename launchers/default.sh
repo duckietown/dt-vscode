@@ -69,6 +69,12 @@ if [ "${HOST_UID:-}" != "" ]; then
         echo "A user with UID:${HOST_UID} (i.e., ${UNAME}) already exists. Reusing it."
     fi
     VSCODE_USER=${UNAME}
+    # copy code-server configuration from the user `duckie`
+    mkdir -p "/home/${UNAME}/.local/share"
+    cp -r "${DT_USER_HOME}/.local/share/code-server" "/home/${UNAME}/.local/share/code-server"
+    chown -R ${UNAME}:${UNAME} "/home/${UNAME}/.local"
+    export VSCODE_USER_SETTINGS_DIR="/home/${UNAME}/.local/share/code-server/User"
+    export VSCODE_USER_EXTENSIONS_DIR="/home/${UNAME}/.local/share/code-server/extensions"
 fi
 
 # find GID of docker's group on the host
