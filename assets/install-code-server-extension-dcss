@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+# ---
+
+PUBLISHER=$1
+EXTENSION=$2
+VERSION=$3
+
+URL="https://duckietown-public-storage.s3.amazonaws.com/assets/vscode/extensions/${PUBLISHER}-${EXTENSION}-${VERSION}.vsix"
+LOCAL="/tmp/${PUBLISHER}.${EXTENSION}.${VERSION}.vsix"
+
+set -x
+wget -qO "${LOCAL}" "${URL}"
+/opt/vscode/bin/code-server \
+    --install-extension \
+        "${LOCAL}"
+rm -f "${LOCAL}"
+set +x
+
+# ---
+set +e
