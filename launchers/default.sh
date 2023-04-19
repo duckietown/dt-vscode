@@ -11,12 +11,13 @@ dt-launchfile-init
 # NOTE: Use the variable DT_REPO_PATH to know the absolute path to your code
 # NOTE: Use `dt-exec COMMAND` to run the main process (blocking process)
 
-set -ex
+set -e
 
 # variables
 VSCODE_AUTH=none
 VSCODE_PATH="${SOURCE_DIR}"
 VSCODE_USER=${DT_USER_NAME}
+SECRETS_DIR=/run/secrets
 
 # look for '*.code-workspace' workspaces and count them
 code_wss=$(find "${VSCODE_PATH}" -mindepth 2 -maxdepth 2 -type f -iname "*.code-workspace")
@@ -103,6 +104,17 @@ if [ -f /ssl/localhost.pem ] & [ -f /ssl/localhost-key.pem ]; then
 else
     echo "WARNING: No SSL keys found under '/ssl', using HTTP instead"
     SSL_CONFIG=""
+fi
+
+# configure github credentials
+GITHUB_CREDENTIALS_FILE=${SECRETS_DIR}/github/credentials/token
+if [ -f ${GITHUB_CREDENTIALS_FILE} ]; then
+    GITHUB_USERNAME=$(jq .username -r ${GITHUB_CREDENTIALS_FILE})
+    GITHUB_TOKEN=$(jq .secret -r ${GITHUB_CREDENTIALS_FILE})
+    echo "INFO: Configuring GitHub credentials for user '${GITHUB_USERNAME}'"
+    git config --system url."https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+    git config --system user.email "vscode@duckietown.com"
+    git config --system user.name "VSCode"
 fi
 
 set +e
