@@ -7,7 +7,7 @@ docker-compose
 
 # this is needed to support Jupyter notebooks
 ipykernel
-ipython
+ipython==7.34.0
 
 # this is for testing
 pytest
