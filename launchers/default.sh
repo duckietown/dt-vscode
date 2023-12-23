@@ -15,7 +15,7 @@ set -ex
 
 # variables
 VSCODE_AUTH=none
-VSCODE_PATH="${SOURCE_DIR}"
+VSCODE_PATH=${VSCODE_PATH:-${SOURCE_DIR}}
 VSCODE_USER=${DT_USER_NAME}
 
 # look for '*.code-workspace' workspaces and count them
@@ -37,7 +37,7 @@ else
     if [ "${code_wss}" != "" ] & [ "${code_wss_num}" = "1" ]; then
         code_ws=$(dirname "${code_wss}")
         echo "Found only 1 workspace at '${code_ws}', auto-opening..."
-        # path is now the path to the .code-workspace file
+        # path is now the path to the directory containing the .vscode file
         VSCODE_PATH="${code_ws}"
     fi
 fi
@@ -120,10 +120,10 @@ while true; do
     echo "Launching VSCode, trial ${trial}..."
     set -x
     sudo \
-        -H \
-        -E \
-        -u ${VSCODE_USER} \
-            dt-launcher-code-server
+        --set-home \
+        --preserve-env \
+        --user ${VSCODE_USER} \
+        LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH PATH=$PATH dt-launcher-code-server
     set +x
     # exit code 0 means requested shutdown
     if [ "$?" -eq 0 ]; then
