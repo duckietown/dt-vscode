@@ -1,14 +1,13 @@
 # LIST YOUR PYTHON3 PACKAGES HERE
-# NOTE: only place non-Duckietown libraries here; pin versions only if necessary
 
 # docker APIs
-docker
-docker-compose
+docker==7.1.0
+docker-compose==1.29.2
 
 # this is needed to support Jupyter notebooks
-ipykernel
+ipykernel==6.29.4
 ipython==7.34.0
 
 # this is for testing
-pytest
+pytest==8.2.2
 
