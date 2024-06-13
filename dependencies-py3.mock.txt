@@ -1,4 +1,9 @@
 actionlib==1.14.0
+angles==1.9.13
+bondpy==1.8.6
+catkin-pkg-modules==1.0.0
+catkin==0.8.10
+cv-bridge==1.16.2
 diagnostic-analysis==1.11.0
 diagnostic-common-diagnostics==1.11.0
 diagnostic-updater==1.11.0
@@ -8,12 +13,15 @@ geneus==3.0.0
 genlisp==0.4.18
 genmsg==0.6.0
 gennodejs==2.0.2
+genpy==0.6.15
 joint-state-publisher==1.15.1
 message-filters==1.16.0
 rosbag==1.16.0
 rosboost-cfg==1.15.8
 rosclean==1.15.8
+roscreate==1.15.8
 rosdep-modules==0.24.0
+rosdistro-modules==0.9.1
 rosgraph==1.16.0
 roslaunch==1.16.0
 roslib==1.15.8
@@ -23,6 +31,7 @@ rosmaster==1.16.0
 rosmsg==1.16.0
 rosnode==1.16.0
 rosparam==1.16.0
+rospkg-modules==1.5.1
 rospy==1.16.0
 rosservice==1.16.0
 rostest==1.16.0
@@ -30,6 +39,7 @@ rostopic==1.16.0
 rosunit==1.15.8
 roswtf==1.16.0
 sensor-msgs==1.13.1
+sip==4.19.21
 smach-ros==2.5.2
 smach==2.5.2
 smclib==1.8.6
@@ -37,4 +47,6 @@ tf-conversions==1.13.2
 tf2-kdl==0.7.7
 tf2-py==0.7.7
 tf2-ros==0.7.7
+tf==1.13.2
 topic-tools==1.16.0
+xacro==1.14.18
