@@ -17,21 +17,38 @@ if [ "${ARCH}" == 'arm32v7' ]; then
 fi
 VSCODE_TAR_URL="https://github.com/coder/code-server/releases/download/v${VSCODE_VERSION}/${VSCODE_TAR_NAME}.tar.gz"
 
-apt-get update && apt-get install -y curl gnupg
-
-mkdir -p /usr/share/keyrings
-
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
-  | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_19.x focal main" \
-  > /etc/apt/sources.list.d/nodesource.list
-
-apt-get update
 
 # install NodeJS
-wget https://deb.nodesource.com/setup_20.x -O - | sudo -E bash -
-apt-get install -y nodejs
+
+
+NODE_VERSION=${1:-20}  # default to Node 20 if not specified
+
+echo "Installing Node.js version $NODE_VERSION..."
+
+# Install dependencies for NodeSource
+apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    ca-certificates \
+    lsb-release \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add NodeSource GPG key
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
+
+# Add NodeSource repository
+DISTRO="$(lsb_release -s -c)"
+echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x $DISTRO main" \
+    > /etc/apt/sources.list.d/nodesource.list
+
+# Update and install Node.js
+apt-get update && apt-get install -y nodejs
+
+# Verify installation
+echo "Node.js version: $(node -v)"
+echo "NPM version: $(npm -v)"
+
+echo "Node.js $NODE_VERSION installed successfully!"
 
 # install
 mkdir -p "${VSCODE_INSTALL_DIR}"
