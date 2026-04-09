@@ -17,6 +17,7 @@ set -e
 VSCODE_AUTH=none
 VSCODE_PATH="${SOURCE_DIR}"
 VSCODE_USER=${DT_USER_NAME}
+VSCODE_GROUP=${VSCODE_USER}
 SECRETS_DIR=/run/secrets
 
 # look for '*.code-workspace' workspaces and count them
@@ -72,6 +73,7 @@ if [ "${HOST_UID:-}" != "" ]; then
         echo "A user with UID:${HOST_UID} (i.e., ${UNAME}) already exists. Reusing it."
     fi
     VSCODE_USER=${UNAME}
+    VSCODE_GROUP=${HOST_UID}
     # copy code-server configuration from the user `duckie`
     mkdir -p "/home/${UNAME}/.local/share"
     cp -r "${DT_USER_HOME}/.local/share/code-server" "/home/${UNAME}/.local/share/code-server"
@@ -101,7 +103,7 @@ fi
 if [ -f /ssl/localhost.pem ] & [ -f /ssl/localhost-key.pem ]; then
     echo "GOOD: Found SSL keys under '/ssl', using HTTPS"
     cp -R /ssl /tmp/ssl
-    chown -R ${VSCODE_USER}:${VSCODE_USER} /tmp/ssl
+    chown -R ${VSCODE_USER}:${VSCODE_GROUP} /tmp/ssl
     SSL_CONFIG="--cert /tmp/ssl/localhost.pem --cert-key /tmp/ssl/localhost-key.pem"
 else
     echo "WARNING: No SSL keys found under '/ssl', using HTTP instead"
