@@ -75,7 +75,7 @@ if [ "${HOST_UID:-}" != "" ]; then
     # copy code-server configuration from the user `duckie`
     mkdir -p "/home/${UNAME}/.local/share"
     cp -r "${DT_USER_HOME}/.local/share/code-server" "/home/${UNAME}/.local/share/code-server"
-    chown -R ${UNAME}:${UNAME} "/home/${UNAME}/.local"
+    chown -R ${UNAME}:${HOST_UID} "/home/${UNAME}/.local"
     export VSCODE_USER_SETTINGS_DIR="/home/${UNAME}/.local/share/code-server/User"
     export VSCODE_USER_EXTENSIONS_DIR="/home/${UNAME}/.local/share/code-server/extensions"
 fi
