@@ -49,10 +49,12 @@ if [ "${HOST_UID:-}" != "" ]; then
     if [ ! "$(getent passwd "${HOST_UID}")" ]; then
         echo "Creating a user '${UNAME}' with UID:${HOST_UID} to emulate host user"
         # create group
-        addgroup \
-            --gid \
-            "${HOST_UID}" \
-            "${UNAME}"
+        if ! getent group ${HOST_UID} > /dev/null 2>&1; then
+            addgroup \
+                --gid \
+                "${HOST_UID}" \
+                "${UNAME}"
+        fi
         # create user
         useradd \
             --create-home \
