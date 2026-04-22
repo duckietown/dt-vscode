@@ -51,10 +51,9 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
     DT_LAUNCH_PATH="${LAUNCH_PATH}" \
     DT_LAUNCHER="${LAUNCHER}"
 
-RUN sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' /etc/apt/sources.list
-
-
-RUN apt-get update || true && \
+RUN find /etc/apt -name "*.list" -exec sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' {} + && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get update -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true || true && \
     apt-get install -y --no-install-recommends ubuntu-keyring && \
     rm -rf /var/lib/apt/lists/*
 
