@@ -51,16 +51,12 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
     DT_LAUNCH_PATH="${LAUNCH_PATH}" \
     DT_LAUNCHER="${LAUNCHER}"
 
-RUN find /etc/apt -name "*.list" -exec sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' {} + && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get update -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true || true && \
-    apt-get install -y --no-install-recommends ubuntu-keyring && \
-    rm -rf /var/lib/apt/lists/*
-
-
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
-RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
+RUN echo 'Acquire::AllowInsecureRepositories "true";\nAPT::Get::AllowUnauthenticated "true";' \
+        > /etc/apt/apt.conf.d/00insecure-ci && \
+    dt-apt-install ${REPO_PATH}/dependencies-apt.txt && \
+    rm /etc/apt/apt.conf.d/00insecure-ci
 
 # === VSCode =======================================>
 
