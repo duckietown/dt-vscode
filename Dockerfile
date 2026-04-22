@@ -51,12 +51,13 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
     DT_LAUNCH_PATH="${LAUNCH_PATH}" \
     DT_LAUNCHER="${LAUNCHER}"
 
+RUN sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' /etc/apt/sources.list
+
 
 RUN apt-get update || true && \
     apt-get install -y --no-install-recommends ubuntu-keyring && \
     rm -rf /var/lib/apt/lists/*
 
-RUN sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' /etc/apt/sources.list
 
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
