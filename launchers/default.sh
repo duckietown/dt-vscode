@@ -17,6 +17,7 @@ set -e
 VSCODE_AUTH=none
 VSCODE_PATH="${SOURCE_DIR}"
 VSCODE_USER=${DT_USER_NAME}
+VSCODE_GROUP=${VSCODE_USER}
 SECRETS_DIR=/run/secrets
 
 # look for '*.code-workspace' workspaces and count them
@@ -49,10 +50,12 @@ if [ "${HOST_UID:-}" != "" ]; then
     if [ ! "$(getent passwd "${HOST_UID}")" ]; then
         echo "Creating a user '${UNAME}' with UID:${HOST_UID} to emulate host user"
         # create group
-        addgroup \
-            --gid \
-            "${HOST_UID}" \
-            "${UNAME}"
+        if ! getent group ${HOST_UID} > /dev/null 2>&1; then
+            addgroup \
+                --gid \
+                "${HOST_UID}" \
+                "${UNAME}"
+        fi
         # create user
         useradd \
             --create-home \
@@ -70,10 +73,11 @@ if [ "${HOST_UID:-}" != "" ]; then
         echo "A user with UID:${HOST_UID} (i.e., ${UNAME}) already exists. Reusing it."
     fi
     VSCODE_USER=${UNAME}
+    VSCODE_GROUP=${HOST_UID}
     # copy code-server configuration from the user `duckie`
     mkdir -p "/home/${UNAME}/.local/share"
     cp -r "${DT_USER_HOME}/.local/share/code-server" "/home/${UNAME}/.local/share/code-server"
-    chown -R ${UNAME}:${UNAME} "/home/${UNAME}/.local"
+    chown -R ${UNAME}:${HOST_UID} "/home/${UNAME}/.local"
     export VSCODE_USER_SETTINGS_DIR="/home/${UNAME}/.local/share/code-server/User"
     export VSCODE_USER_EXTENSIONS_DIR="/home/${UNAME}/.local/share/code-server/extensions"
 fi
@@ -99,7 +103,7 @@ fi
 if [ -f /ssl/localhost.pem ] & [ -f /ssl/localhost-key.pem ]; then
     echo "GOOD: Found SSL keys under '/ssl', using HTTPS"
     cp -R /ssl /tmp/ssl
-    chown -R ${VSCODE_USER}:${VSCODE_USER} /tmp/ssl
+    chown -R ${VSCODE_USER}:${VSCODE_GROUP} /tmp/ssl
     SSL_CONFIG="--cert /tmp/ssl/localhost.pem --cert-key /tmp/ssl/localhost-key.pem"
 else
     echo "WARNING: No SSL keys found under '/ssl', using HTTP instead"

@@ -1,8 +1,5 @@
 # LIST YOUR PYTHON3 PACKAGES HERE
 
-# docker APIs
-docker==7.1.0
-docker-compose==1.29.2
 
 # this is needed to support Jupyter notebooks
 ipykernel==6.29.4
