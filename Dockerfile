@@ -53,7 +53,7 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
 
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
-RUN echo 'Acquire::AllowInsecureRepositories "true";\nAPT::Get::AllowUnauthenticated "true";' \
+RUN printf 'Acquire::AllowInsecureRepositories "true";\nAPT::Get::AllowUnauthenticated "true";\n' \
         > /etc/apt/apt.conf.d/00insecure-ci && \
     dt-apt-install ${REPO_PATH}/dependencies-apt.txt && \
     rm /etc/apt/apt.conf.d/00insecure-ci
