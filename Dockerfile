@@ -51,6 +51,11 @@ ENV DT_MODULE_TYPE="${REPO_NAME}" \
     DT_LAUNCH_PATH="${LAUNCH_PATH}" \
     DT_LAUNCHER="${LAUNCHER}"
 
+
+RUN apt-get update || true && \
+    apt-get install -y --no-install-recommends ubuntu-keyring && \
+    rm -rf /var/lib/apt/lists/*
+    
 # install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"
 RUN dt-apt-install ${REPO_PATH}/dependencies-apt.txt
