@@ -9,6 +9,7 @@
     "terminal.integrated.fontFamily": "monospace",
     "terminal.integrated.fontSize": 13,
     "extensions.autoCheckUpdates": false,
-    "extensions.autoUpdate": false
+    "extensions.autoUpdate": false,
+    "python.languageServer": "None"
 }
 
